@@ -7,15 +7,15 @@ from utils import kernel, get_train_data
 n = 50
 n_test_samples = 10
 param = 0.25
+real_data_distribution_nf = np.tanh
 
 # Noiseless training data
 
 
 # train_points = [-4, -3, -3.5, -2, -1, 1, 2, 3.5]
 train_points = [-4, -3.5, -2, -1, 1, 3.5]
-x_train, y_train = get_train_data(train_points, np.sin)
+x_train, y_train = get_train_data(train_points, real_data_distribution_nf)
 x_test = np.linspace(-5, 5, n).reshape(-1, 1)
-
 
 K_ss = kernel(x_test, x_test, param)
 
@@ -50,7 +50,7 @@ f_post = mu.reshape(-1, 1) + np.dot(L, np.random.normal(size=(n, n_test_samples)
 
 plt.plot(x_train, y_train, 'bs', ms=8)
 plt.plot(x_test, f_post)
-plt.plot(x_test, np.sin(x_test), c='k')
+plt.plot(x_test, real_data_distribution_nf(x_test), c='k')
 plt.gca().fill_between(x_test.flat, mu - 2 * stdv, mu + 2 * stdv, color="#dddddd")
 plt.plot(x_test, mu, 'r--', lw=2)
 plt.axis([-5, 5, -3, 3])
